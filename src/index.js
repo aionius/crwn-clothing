@@ -9,12 +9,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { BrowserRouter } from 'react-router-dom';
+import { UserProvider } from './context/user.context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
       <ToastContainer autoClose={3000} hideProgressBar={true} />
     </BrowserRouter>
   </React.StrictMode>
