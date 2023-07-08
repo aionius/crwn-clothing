@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import { useState } from 'react';
+
+import FormInput from '../form-input/form-input.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 
 import {
-  signInAuthWithEmailAndPassword,
+  signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from '../../utils/firebase/firebase.utils';
-import FormInput from '../form-input/form-input.component';
-import Button from '../button/button.component';
-import './sign-in-form.styles.scss';
+
+import { SignInContainer, ButtonsContainer } from './sign-in-form.styles';
 
 const defaultFormFields = {
   email: '',
@@ -18,76 +19,65 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
-  };
-
-  const resetFormField = () => {
+  const resetFormFields = () => {
     setFormFields(defaultFormFields);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!email || !password) {
-      toast.info('Please enter email or password.');
-      return;
-    }
-
-    try {
-      await signInAuthWithEmailAndPassword(email, password);
-      resetFormField();
-    } catch (error) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          toast.error('Invalid credentials, please try again.');
-          break;
-        case 'auth/user-not-found':
-          toast.error('Email not found.');
-          break;
-        default:
-          console.log(error);
-          break;
-      }
-    }
   };
 
   const signInWithGoogle = async () => {
     await signInWithGooglePopup();
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await signInAuthUserWithEmailAndPassword(email, password);
+      resetFormFields();
+    } catch (error) {
+      console.log('user sign in failed', error);
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
+  };
+
   return (
-    <div className="sign-in-container">
-      <h2>I already have an account</h2>
-      <p>Sign in with your email and password</p>
+    <SignInContainer>
+      <h2>Already have an account?</h2>
+      <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
-          label="email"
+          label="Email"
           type="email"
+          required
+          onChange={handleChange}
           name="email"
           value={email}
-          onChange={handleChange}
-          required
         />
+
         <FormInput
-          label="password"
+          label="Password"
           type="password"
+          required
+          onChange={handleChange}
           name="password"
           value={password}
-          onChange={handleChange}
-          required
         />
-        <div className="buttons-container">
-          <Button type="submit" buttonType="inverted">
-            Sign In
+        <ButtonsContainer>
+          <Button type="submit">Sign In</Button>
+          <Button
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            type="button"
+            onClick={signInWithGoogle}
+          >
+            Sign In With Google
           </Button>
-          <Button type="button" onClick={signInWithGoogle} buttonType="google">
-            Google Sign In
-          </Button>
-        </div>
+        </ButtonsContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 
