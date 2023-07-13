@@ -6,7 +6,7 @@ import {
 } from '../../store/cart/cart.selector';
 
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
-import { priceConverter } from '../../utils/helpers';
+import PaymentForm from '../../components/payment-form/payment-form.component';
 
 import {
   CheckoutContainer,
@@ -23,7 +23,7 @@ const Checkout = () => {
     <CheckoutContainer>
       <CheckoutHeader>
         <HeaderBlock>
-          <span>Products</span>
+          <span>Product</span>
         </HeaderBlock>
         <HeaderBlock>
           <span>Description</span>
@@ -39,9 +39,11 @@ const Checkout = () => {
         </HeaderBlock>
       </CheckoutHeader>
       {cartItems.map((cartItem) => (
-        <CheckoutItem cartItem={cartItem} key={cartItem.id} />
+        <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
-      <Total>Total: {priceConverter(cartTotal)}</Total>
+      <Total>Total: ${cartTotal}</Total>
+
+      <PaymentForm />
     </CheckoutContainer>
   );
 };

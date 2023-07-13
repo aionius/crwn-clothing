@@ -2,9 +2,6 @@ import { CART_ACTION_TYPES } from './cart.types';
 import { createAction } from '../../utils/reducer/reducer.utils';
 
 const addCartItem = (cartItems, productToAdd) => {
-  // find if cartItems contains productToAdd
-  // if found, increment quantity
-  // return new array with modified cartItems/new cart item
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === productToAdd.id
   );
@@ -26,12 +23,12 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
     (cartItem) => cartItem.id === cartItemToRemove.id
   );
 
-  // check if quantity is equal to 1, if it is remove item from cart
+  // check if quantity is equal to 1, if it is remove that item from the cart
   if (existingCartItem.quantity === 1) {
     return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
   }
 
-  // return back cartItems with matching cartItem with reduced quantity
+  // return back cartitems with matching cart item with reduced quantity
   return cartItems.map((cartItem) =>
     cartItem.id === cartItemToRemove.id
       ? { ...cartItem, quantity: cartItem.quantity - 1 }
@@ -39,13 +36,11 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
   );
 };
 
-const clearCartItem = (cartItems, cartItemToClear) => {
-  return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
-};
+const clearCartItem = (cartItems, cartItemToClear) =>
+  cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 
-export const setIsCartOpen = (boolean) => {
-  return createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean);
-};
+export const setIsCartOpen = (boolean) =>
+  createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean);
 
 export const addItemToCart = (cartItems, productToAdd) => {
   const newCartItems = addCartItem(cartItems, productToAdd);

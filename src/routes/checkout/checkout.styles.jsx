@@ -8,6 +8,7 @@ export const CheckoutContainer = styled.div`
   align-items: center;
   margin: 50px auto 0;
 `;
+
 export const CheckoutHeader = styled.div`
   width: 100%;
   padding: 10px 0;
@@ -19,9 +20,10 @@ export const CheckoutHeader = styled.div`
 export const HeaderBlock = styled.div`
   text-transform: capitalize;
   width: 23%;
-`;
-export const LastChild = styled.div`
-  width: 8%;
+
+  &:last-child {
+    width: 8%;
+  }
 `;
 
 export const Total = styled.span`
